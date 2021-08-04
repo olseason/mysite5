@@ -2,14 +2,125 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-	<!-- 조회수 올리기(글읽기) -->
+
+	<!-- 조회수 -->
 	<update id="updateHit" parameterType="int">
-		<![CDATA[
-			update board
-			set hit = hit + 1
-			where no = #{no}
-		]]>
-	
+	<![CDATA[
+		UPDATE board
+		SET
+		    hit = hit + 1
+		WHERE
+		    no = #{no}
+	]]>
 	</update>
-	
+
+	<!-- 게시판 정보 가져오기 -->
+	<select id="selectBoard" parameterType="int" resultType="BoardVo">
+	<![CDATA[
+		SELECT
+		    b.no,
+		    b.title,
+		    b.content,
+		    b.hit,
+		    b.reg_date,
+		    b.user_no,
+		    u.name
+		FROM
+		    board  b,
+		    users  u
+		WHERE
+		        u.no = b.user_no
+		    AND b.no = #{no}
+	]]>
+	</select>
+
+	<!-- 게시판 리스트(검색) -->
+	<select id="selectList" resultType="BoardVo" parameterType="map">
+	<![CDATA[
+		SELECT
+		    rn,
+		    bu.no,
+		    bu.title,
+		    bu.name,
+		    bu.hit,
+		    bu.reg_date,
+		    bu.user_no
+		FROM
+		    (
+		        SELECT
+		            ROWNUM rn,
+		            b.no,
+		            b.title,
+		            u.name,
+		            b.hit,
+		            b.content,
+		            b.reg_date,
+		            b.user_no
+		        FROM
+		            board  b,
+		            users  u
+		        WHERE
+		            u.no = b.user_no
+		        ORDER BY
+		            b.no ASC
+		    ) bu
+   	]]>
+		<choose>
+			<when test="#{keyword} == null">
+			<![CDATA[
+				ORDER BY
+		   			 rn DESC
+			]]>
+			</when>
+
+			<otherwise>
+			<![CDATA[
+				WHERE
+				    ( bu.name
+				      || bu.title
+				      || bu.content ) LIKE '%' || #{keyword} || '%'
+				ORDER BY
+				    rn DESC
+			]]>
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 게시글 작성 -->
+	<insert id="write" parameterType="BoardVo">
+	<![CDATA[
+		INSERT INTO board VALUES (
+		    seq_board_no.NEXTVAL,
+		    #{title},
+		    #{content},
+		    0,
+		    sysdate,
+		    #{user_no}
+		)
+	]]>
+	</insert>
+
+	<!-- 게시글 수정 -->
+	<update id="modify" parameterType="BoardVo">
+	<![CDATA[
+		UPDATE board
+		SET
+		    title = #{title},
+		    content = #{content}
+		WHERE
+		    no = #{no}
+	]]>
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM board
+		WHERE
+		    no = #{no}
+	]]>
+	</delete>
+
+
+
 </mapper>
