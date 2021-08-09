@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,11 +45,7 @@
         <div id="user">
           <div id="joinOK">
 
-            <p class="text-large bold">
-              회원가입을 축하합니다.
-              <br>
-              <br>
-              <a href="${pageContext.request.contextPath}/user/loginForm">[로그인하기]</a>
+            <p class="text-large bold">회원가입을 축하합니다. <br> <br> <a href="${pageContext.request.contextPath}/user/loginForm">[로그인하기]</a>
             </p>
 
           </div>

@@ -59,4 +59,16 @@
 	]]>
 	</select>
 
+	<!-- 아이디 중복체크 -->
+	<select id="idCheck" parameterType="String" resultType="UserVo">
+	<![CDATA[
+		SELECT
+		    name
+		FROM
+		    users
+		WHERE
+		        id = #{id}
+	]]>
+	</select>
+
 </mapper>

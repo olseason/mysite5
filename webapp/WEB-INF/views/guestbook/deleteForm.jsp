@@ -19,8 +19,8 @@
 
     <div id="container" class="clearfix">
 
-    <!-- aside -->
-    <c:import url="/WEB-INF/views/includes/asideGuestBook.jsp"></c:import>
+      <!-- aside -->
+      <c:import url="/WEB-INF/views/includes/asideGuestBook.jsp"></c:import>
 
       <div id="content">
 
